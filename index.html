@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1a14">
+<title>DURAK AI — Дурак против ИИ</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ===== ГЛАВНОЕ МЕНЮ ===== -->
+  <section id="screen-menu" class="screen active">
+    <div class="menu-top">
+      <button class="icon-btn" id="m-theme" aria-label="Сменить тему" title="Тема">🌙</button>
+      <button class="icon-btn" id="m-sound" aria-label="Звук" title="Звук">🔊</button>
+      <button class="icon-btn" id="m-stats" aria-label="Статистика и достижения" title="Достижения">🏆</button>
+    </div>
+    <div class="menu-center">
+      <div class="fan" aria-hidden="true">
+        <div class="fcard red" style="--r:-32deg;--x:-70px"><b>Т</b><i>♥</i><span>♥</span></div>
+        <div class="fcard black" style="--r:-16deg;--x:-35px"><b>К</b><i>♠</i><span>♠</span></div>
+        <div class="fcard red" style="--r:0deg;--x:0px"><b>Д</b><i>♦</i><span>♦</span></div>
+        <div class="fcard black" style="--r:16deg;--x:35px"><b>В</b><i>♣</i><span>♣</span></div>
+        <div class="fcard red gold" style="--r:32deg;--x:70px"><b>10</b><i>♥</i><span>♥</span></div>
+      </div>
+      <h1 class="logo">DURAK <em>AI</em></h1>
+      <p class="tagline">Испытай свою тактику</p>
+      <div class="menu-buttons">
+        <button class="btn primary big" id="m-play">▶ Играть</button>
+        <button class="btn" id="m-continue" hidden>Продолжить партию</button>
+        <div class="row2">
+          <button class="btn" id="m-learn">🎓 Обучение</button>
+          <button class="btn" id="m-rules">📖 Правила игры</button>
+        </div>
+        <button class="btn" id="m-settings">⚙ Настройки</button>
+      </div>
+      <div class="mode-pick" role="group" aria-label="Режим игры">
+        <button class="chip" data-mode="podkidnoy">Подкидной</button>
+        <button class="chip" data-mode="perevodnoy">Переводной</button>
+      </div>
+      <p class="menu-stats" id="menu-stats"></p>
+    </div>
+  </section>
+
+  <!-- ===== ВЫБОР СЛОЖНОСТИ ===== -->
+  <section id="screen-diff" class="screen">
+    <div class="diff-wrap">
+      <button class="btn small" id="d-back">← Назад</button>
+      <h2>Выбери сложность</h2>
+      <div class="diff-cards">
+        <button class="diff-card" data-level="1">
+          <span class="dot">🟢</span><h3>Лёгкий</h3><p class="sub">Учись играть</p>
+          <ul><li>Играет по правилам, но выбирает простые ходы</li><li>Чаще ходит младшими картами</li><li>Может тратить козыри не лучшим образом</li></ul>
+        </button>
+        <button class="diff-card" data-level="2">
+          <span class="dot">🟡</span><h3>Средний</h3><p class="sub">Проверь тактику</p>
+          <ul><li>Оценивает ценность карт и козырей</li><li>Бьёт младшими картами, когда это выгодно</li><li>Иногда подкидывает карты</li></ul>
+        </button>
+        <button class="diff-card" data-level="3">
+          <span class="dot">🔴</span><h3>Сложный</h3><p class="sub">Настоящий вызов</p>
+          <ul><li>Считает вышедшие карты и риск ходов</li><li>Бережёт старшие козыри</li><li>Учитывает размер колоды и руки</li></ul>
+        </button>
+      </div>
+      <button class="btn primary big" id="d-start">Начать игру</button>
+    </div>
+  </section>
+
+  <!-- ===== ИГРОВОЙ СТОЛ ===== -->
+  <section id="screen-game" class="screen">
+    <header class="g-top">
+      <div class="ai-box">
+        <div class="avatar" id="ai-avatar" data-explain="ai-status">🤖</div>
+        <div class="ai-info">
+          <div class="ai-name">DURAK AI <span class="badge" id="ai-diff"></span></div>
+          <div class="ai-status" id="ai-status" data-explain="ai-status">…</div>
+        </div>
+      </div>
+      <div class="ai-hand-wrap" id="ai-hand" data-explain="ai-hand" aria-label="Карты соперника"></div>
+      <div class="ai-count" data-explain="ai-hand"><span id="ai-count">6</span><small>карт</small></div>
+    </header>
+
+    <main class="felt" id="felt">
+      <div class="deck-zone">
+        <div class="deck-stack" id="deck" data-explain="deck"><div class="trump-slot" id="trump-slot" data-explain="trump"></div><div class="deck-back" id="deck-back"></div><span class="deck-count" id="deck-count">24</span></div>
+        <div class="trump-badge" id="trump-badge" data-explain="trump">Козырь <b id="trump-sym">♠</b></div>
+        <div class="discard" id="discard" data-explain="discard"><span>Бито</span><b id="discard-count">0</b></div>
+      </div>
+      <div class="table-zone">
+        <div class="table-cards" id="table" data-explain="table"></div>
+        <div class="stage" id="stage" data-explain="stage"></div>
+      </div>
+    </main>
+
+    <aside class="side">
+      <div class="controls" id="controls">
+        <button class="btn primary" id="b-attack" data-explain="btn-attack">Атаковать</button>
+        <button class="btn" id="b-transfer" data-explain="btn-transfer" hidden>Перевести</button>
+        <button class="btn" id="b-end" data-explain="btn-end">Бито</button>
+        <button class="btn danger" id="b-take" data-explain="btn-take" hidden>Взять карты</button>
+        <button class="btn" id="b-hint" data-explain="btn-hint">💡 Подсказка</button>
+        <button class="btn" id="b-helper" data-explain="btn-helper">🎓 Помощник</button>
+        <button class="btn" id="b-pause" data-explain="btn-pause">⏸ Пауза</button>
+      </div>
+      <div class="assist-mini" id="assist-mini" aria-live="polite"></div>
+      <section class="helper" id="helper" aria-label="Помощник">
+        <div class="helper-head"><b>🎓 Помощник</b><button class="icon-btn small" id="h-close" aria-label="Закрыть">✕</button></div>
+        <div class="bubble" id="bubble" aria-live="polite">Привет! Я подскажу правила по ходу партии.</div>
+        <div class="helper-actions">
+          <button class="btn small" id="h-explain" data-explain="btn-explain">❔ Что это значит?</button>
+          <button class="btn small" id="h-why">🤔 Почему ИИ так походил?</button>
+          <button class="btn small" id="h-legal">👁 Показать подходящие карты</button>
+          <button class="btn small" id="h-rules">📖 Краткие правила</button>
+          <button class="btn small" id="h-new">🔄 Новая игра</button>
+        </div>
+        <div class="log-title">История действий</div>
+        <ol class="log" id="log"></ol>
+      </section>
+    </aside>
+
+    <footer class="player-zone">
+      <div class="p-info"><span>Ты</span> · <span id="p-count">6</span> карт</div>
+      <div class="hand" id="hand" data-explain="player-hand"></div>
+    </footer>
+  </section>
+</div>
+
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true"><div class="modal-box" id="modal-box"></div></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
